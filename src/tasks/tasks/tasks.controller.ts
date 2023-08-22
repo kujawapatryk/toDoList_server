@@ -9,12 +9,12 @@ export class TasksController {
   }
 
   @Post('/:id')
-  createTask(@Param('id') id:number){
+  createTask(@Param('id') id:string){
     return "Dostęp POST ";
   }
 
   @Patch('/:id')
-  updateTask(@Param('id') id: number){
+  updateTask(@Param('id') id: string){
     return "Dostęp Patch";
   }
 
