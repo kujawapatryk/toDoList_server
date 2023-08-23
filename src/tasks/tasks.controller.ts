@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 
 @Controller('tasks')
 export class TasksController {
@@ -11,6 +11,11 @@ export class TasksController {
   @Post('/:id')
   createTask(@Param('id') id:string){
     return "Dostęp POST ";
+  }
+
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string){
+    return "Dostęp Delete";
   }
 
   @Patch('/:id')
