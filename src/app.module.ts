@@ -3,9 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksController } from "./tasks/tasks.controller";
 import { TasksModule } from "./tasks/tasks.module";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { configDB } from "./config/config";
 
 @Module({
-  imports: [TasksModule],
+  imports: [
+    TypeOrmModule.forRoot(configDB),
+    TasksModule],
   controllers: [AppController, TasksController],
   providers: [AppService],
 })
