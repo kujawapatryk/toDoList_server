@@ -6,6 +6,7 @@ import { TasksModule } from "./tasks/tasks.module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configDB } from "./config/config";
 import { ConfigModule } from "@nestjs/config";
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -16,4 +17,6 @@ import { ConfigModule } from "@nestjs/config";
   providers: [AppService],
 })
 
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}
