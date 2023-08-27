@@ -2,7 +2,7 @@ import {Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { configDB } from "src/config/config";
 import { TasksInterface } from "src/types";
-import { getConnection,  DataSource, Repository } from "typeorm";
+import { getConnection,  DataSource, Repository, DeleteResult } from "typeorm";
 import { AddTaskDto } from "./dto/add-task.dto";
 import { Tasks } from "./tasks.entity";
 
@@ -16,31 +16,37 @@ export class TasksService{
 
         @InjectRepository(Tasks)
         private tasksRepository: Repository<Tasks>,
-
     ) {
-
     }
 
-    async create(item: AddTaskDto) {
+    async create(item: AddTaskDto): Promise<TasksInterface> {
+
         if (item.done === undefined) {
-            item.done = true;
+            item.done = false;
         }
-        const task = this.tasksRepository.create(item);
-        this.tasksRepository.save(task)
-
+        const task = await this.tasksRepository.create(item);
+        return await this.tasksRepository.save(task)
     }
 
-    async getTasks() {
-        return this.tasksRepository.find();
+    async getTasks():Promise<TasksInterface[]> {
+
+        return await this.tasksRepository.find({
+            order: {
+                id: 'DESC',
+            }
+        });
     }
 
-    async deleteTask(id:number){
-        return this.tasksRepository.delete(id)
+    async deleteTask(id:number):Promise<number>{
+
+        const result = await this.tasksRepository.delete(id);
+        return result.affected;
     }
 
-    async updateTask(id: number){
-        this.tasksRepository.update(id,{done: true})
-        return this.tasksRepository.findBy({id});
+    async updateTask(id: number, done: boolean):Promise<number>{
+
+        const result = await this.tasksRepository.update(id,{done});
+        return result.affected;
     }
 
 }
