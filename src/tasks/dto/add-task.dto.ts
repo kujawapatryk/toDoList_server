@@ -7,5 +7,5 @@ export class AddTaskDto{
     content: string;
 
     @IsBoolean()
-    done?: boolean = false;
+    done: boolean = false;
 }
