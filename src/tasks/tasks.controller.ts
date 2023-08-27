@@ -1,5 +1,6 @@
-import {Body, Controller, Delete, Get, Inject, Param, Patch, Post } from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { AddTaskDto } from "./dto/add-task.dto";
+import { UpdateTaskDto } from "./dto/update-task.dto";
 import { TasksService } from "./tasks.service";
 
 
@@ -8,28 +9,42 @@ export class TasksController {
 
   constructor(
      private tasksService: TasksService
-      ) {
-  }
+  ) {}
 
   @Get('/')
-  getTasks(){
-   return this.tasksService.getTasks();
+  async getTasks(){
+   return await this.tasksService.getTasks();
   }
 
   @Post('/')
-  createTask(@Body() item: AddTaskDto){
-   return this.tasksService.create(item);
-   // return "Dostęp POST ";
+  async createTask(@Body() item: AddTaskDto){
+   return await this.tasksService.create(item);
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string){
-    return this.tasksService.deleteTask(Number(id));
+  async deleteTask(@Param('id') id: number){
+    if (isNaN(id)) {
+      return { message: 'tryLater', status: 'fail' };
+    }
+    const result = await this.tasksService.deleteTask(Number(id));
+
+    return result === 0
+        ? { message: 'tryLater', status: 'fail' }
+        : { message: 'taskDeleted', status: 'success' };
   }
 
   @Patch('/:id')
-  updateTask(@Param('id') id: string){
-    return this.tasksService.updateTask(Number(id));
+  async updateTask(
+      @Param('id' ) id: number,
+      @Body() updateTask: UpdateTaskDto
+  ){
+    if (isNaN(id)) {
+      return { message: 'tryLater', status: 'fail' };
+    }
+    const result =  await this.tasksService.updateTask(Number(id),updateTask.done);
+    return result === 0
+        ? { message: 'tryLater', status: 'fail' }
+        : { message: 'taskConfirmation', status: 'success' };
   }
 
 }
