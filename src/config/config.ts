@@ -16,3 +16,5 @@ export const configDB: TypeOrmModuleOptions ={
   logging: true,
   synchronize: true
 }
+
+export const configCors = process.env.CORS
