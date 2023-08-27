@@ -1,4 +1,11 @@
+import {IsBoolean, IsNotEmpty, IsString, Length } from "class-validator";
+
 export class AddTaskDto{
+    @Length(1, 120)
+    @IsString()
+    @IsNotEmpty()
     content: string;
-    done: boolean = true;
+
+    @IsBoolean()
+    done?: boolean = false;
 }
