@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksController } from "./tasks/tasks.controller";
@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { configDB } from "./config/config";
 import { ConfigModule } from "@nestjs/config";
 import { DataSource } from 'typeorm';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,7 +15,11 @@ import { DataSource } from 'typeorm';
     TypeOrmModule.forRoot(configDB),
     TasksModule],
   controllers: [AppController, TasksController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },],
 })
 
 export class AppModule {
