@@ -1,7 +1,8 @@
-import { IsBoolean } from "class-validator";
+import { IsBoolean } from 'class-validator';
 
-export class UpdateTaskDto
-{
-    @IsBoolean()
+export class UpdateTaskDto {
+
+    @IsBoolean({ message: 'Done must be a boolean value' })
     done: boolean;
+
 }
