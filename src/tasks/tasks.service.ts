@@ -1,6 +1,5 @@
 import {Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { configDB } from "src/config/config";
 import { TasksInterface } from "src/types";
 import { getConnection,  DataSource, Repository, DeleteResult } from "typeorm";
 import { AddTaskDto } from "./dto/add-task.dto";
@@ -16,15 +15,16 @@ export class TasksService{
 
         @InjectRepository(Tasks)
         private tasksRepository: Repository<Tasks>,
-    ) {
-    }
+    ) {}
 
     async create(item: AddTaskDto): Promise<TasksInterface> {
 
         if (item.done === undefined) {
             item.done = false;
         }
+
         const task = await this.tasksRepository.create(item);
+
         return await this.tasksRepository.save(task)
     }
 

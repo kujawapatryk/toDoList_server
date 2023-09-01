@@ -1,8 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, } from "@nestjs/common";
 import { AddTaskDto } from "./dto/add-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { TasksService } from "./tasks.service";
-
 
 @Controller('tasks')
 export class TasksController {
@@ -23,9 +22,11 @@ export class TasksController {
 
   @Delete('/:id')
   async deleteTask(@Param('id') id: number){
+
     if (isNaN(id)) {
       return { message: 'tryLater', status: 'fail' };
     }
+
     const result = await this.tasksService.deleteTask(Number(id));
 
     return result === 0
@@ -35,12 +36,14 @@ export class TasksController {
 
   @Patch('/:id')
   async updateTask(
-      @Param('id' ) id: number,
+      @Param('id') id: number,
       @Body() updateTask: UpdateTaskDto
   ){
+
     if (isNaN(id)) {
       return { message: 'tryLater', status: 'fail' };
     }
+
     const result =  await this.tasksService.updateTask(Number(id),updateTask.done);
     return result === 0
         ? { message: 'tryLater', status: 'fail' }
